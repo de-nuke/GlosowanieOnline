@@ -1,12 +1,19 @@
 # GlosowanieOnline
 
   cd postgres
+  
   sudo docker build -t me/postgres .
+  
   cd ..
+  
   cd web
+  
   sudo docker build -t me/web .
+  
   cd ..
-  cd nginx 
+  
+  cd nginx
+  
   sudo docker build -t me/nginx .
   cd ..
   cd webfront
