@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8">
+	<title> Notatki </title>
+	<meta name="description" content="Notes">
+	<meta name ="keywords" content="main, notes">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}" ></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+	<h1> Witaj użytkowniku: {{ user }} </h1>
+	<div class = "option_panel" id="option_panel">
+		<ul>
+		<li class="option_panel_inside" id="new_note">Utworz nowa notatke</li>
+		<li class="option_panel_inside" id="notes_list">Otworz liste notatek</li>
+	        <li class="option_panel_inside" id="logout">Wyloguj sie</li>
+		</ul>
+	</div>
+	<div class = "dynamic_panel" id="dynamic_panel">
+		<p>{{ message }}</p>
+	</div>
+</body>
+</html>
