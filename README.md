@@ -1,24 +1,16 @@
 # GlosowanieOnline
 
-  * `cd postgres`
-  * `sudo docker build -t me/postgres .` 
-  * `cd ..`
-  * `cd web`
-  * `sudo docker build -t me/web .`
-  * `cd ..`
-  * `cd nginx`
-  * `sudo docker build -t me/nginx .`
-  * `cd ..`
-  * `cd webfront`
-  * `sudo docker build -t me/webfront .`
-  * `cd ..`
-  * `sudo docker volume create --name postgres-data`
-  * `sudo docker run -d --name postgres --volume postgres-data:/var/lib/postgresql me/postgres`
-  * `sudo docker run -d --name web --link postgres:postgres --env-file web/web.env me/web`
-  * `sudo docker run -d --name nginx --volumes-from web --link web:web --publish XXXX:80  me/nginx`
- (XXXX - port dla flaskowej apki do API)
-  * `sudo docker run -d -p 5000:5000 me/webfront`
-  * `sudo docker exec web python create_db.py`
+### Jesli bedzie coś nie tak podczas buildowania (./build\_all.sh):
+W Dockerfile zarowno w `web/` jak i w `webfront/` **usuncie** z tych linijek:
+    - `RUN echo nameserver 10.30.0.132 >> /etc/resolv.conf && pip3 install --no-cache-dir -r requirements.txt`
+    - `RUN echo nameserver 10.30.0.132 >> /etc/resolv.conf && pip install -r requirements.txt`
+ten fragment:
+    - `echo nameserver 10.30.0.132 >> /etc/resolv.conf &&`
   
-W przeglądarce powinno działać zarówno 'http://localhost:XXXX' (dla API) jak i 'http://localhost:5000' dla apki ze stroną internetową
+  * `chmod +x build_all.sh run_all.sh`
+  * `./build_all.sh`
+  * `./run_all.sh`
   
+  
+API: http://localhost:8001/makosak/notes/2 - przykladowy adres. Liczy sie PORT
+WWW: http://localhost:8002/site/login - przykladowy adres. Liczy sie PORT 

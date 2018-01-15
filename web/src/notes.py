@@ -116,7 +116,7 @@ def get_note(id):
 			status = 401
 			response_data = {'error' : 'Brak uprawnien'}
 	else:
-		response_data = {'error' : 'Nie podano tokenu w headerach'}
+		response_data = {'error' : 'Nie podano tokenu w headerachX DX XXD XDX DX '}
 	return make_response(response_data, status, headers)
 
 
