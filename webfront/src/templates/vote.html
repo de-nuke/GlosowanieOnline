@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8">
+	<title> Głosowanie on-line </title>
+	<meta name="description" content="Voting">
+	<meta name ="keywords" content="vote, voting">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}" ></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+	<h1>Zagłosuj</h1>
+    <p>Uwaga! Głosowanie jest jednorazowe. Nie można zmienić głosu po jego oddaniu!</p>
+    <form action="http://localhost:8002/candidate_chosen" method="POST">
+        <p>Wybierz kandydata:</p>
+        <select name="candidate" required>
+            <option value="volvo">Volvo</option>
+        </select>    
+        <p><input type="submit" name="submit" value="Zaloguj"></p>
+    </form>
+    <p><a href="http://localhost:8002/candidates">Lista kandydatów</a></p>
+    <p><a href="http://localhost:8002/logged">Wróć</a></p>
+</body>
+</html>

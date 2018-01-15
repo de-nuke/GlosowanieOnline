@@ -9,19 +9,13 @@
 <body>
     <h1>Zaloguj się</h1>
 	<div class="login">
-			<form action="http://localhost:8002/check" method="POST">
-				<p>Imię:</p>
-				<input type="text" name="first_name" required>
-                <p>Nazwisko:</p>
-                <input type="text" name="last_name" required>
-                <p>Imię ojca:</p>
-                <input type="text" name="fathers_name" required>
-                <p>Imię matki:</p>
-                <input type="text" name="mothers_name" required>
+        <form action="http://localhost:8002/check_admin" method="POST">
                 <p>Numer seryjny dowodu osobistego:</p>
                 <input type="text" name="id_number" required>
                 <p>PESEL:</p>
                 <input type="text" name="pesel" required>
+                <p>Hasło:</p>
+                <input type="password" name="password" required>
                 <p><input type="submit" name="submit" value="Zaloguj"></p>
 			</form>
 	</div>

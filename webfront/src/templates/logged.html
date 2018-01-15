@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8">
+	<title> Głosowanie on-line </title>
+	<meta name="description" content="Voting">
+	<meta name ="keywords" content="main, vote, voting">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}" ></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Witaj {first_name} {last_name}!</h1>
+    <p>Poniżej możesz zobaczyć kandydatów do głosowania oraz wybrać swojego kandydata. Po zakończeniu okresu wyborczego na stronie głównej zostaną umieszczone wyniki.</p>
+    <p><a href="http://localhost:8002/vote">Zagłosuj</a></p>
+    <p><a href="http://localhost:8002/candidates">Zobacz listy kandydatów</a></p>
+    <p><a href="http://localhost:8002/logout">Wyloguj się</a></p>
+</body>
+</html>
