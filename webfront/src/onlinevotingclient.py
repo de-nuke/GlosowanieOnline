@@ -83,8 +83,8 @@ def candidates_list():
         print("CODE WAS 200")
         candidates_list = response_dict['candidates_list']
         print(candidates_list)
-        #for value in candidates_list:
-        ids.append(candidates_list['id'])
+        for value in candidates_list:
+            ids.append(value['id'])
     return render_template('/candidates_list.html', ids=ids)
     #return render_template('/candidates_list.html', ids=ids)
 @app.route(app_url + '/humunculus1')
@@ -118,4 +118,4 @@ def page_not_found(e):
 	print("Nie znaleziono strony.")
 	return "Nie znaleziono strony."
 if __name__ == '__main__':
-	app.run(debug=True,host='0.0.0.0')
+	app.run(debug=True,host='0.0.0.0', port=8002)
