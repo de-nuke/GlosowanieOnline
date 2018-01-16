@@ -6,13 +6,14 @@
 	<meta name="description" content="Candidates">
 	<meta name ="keywords" content="who, candidates, vote, voting">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
-	<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}" ></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
 	<h1>Lista kandydatów</h1>
     <p>Poniżej możesz zobaczyć kandydatów do głosowania.</p>
     <p>NO BULLSZIT CANDIDATES LISTED BY FOR</p>
+    {% for n in range( ids|length ) %}
+        <p>ids[n]</p>
+    {% endfor %}
     <p><a href="http://localhost:8002/logged">Wróć</a></p>
 </body>
 </html>
