@@ -25,16 +25,21 @@ class User(db.Model):
                 raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
 
 
-class Machine(db.Model):
-
-    __tablename__ = 'machines'
+class Candidate(db.Model):
+    __tablename__ = "candidates"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    last_checked = db.Column(db.DateTime, nullable=False)
-    last_status = db.Column(db.Boolean, nullable=False)
-    def __init__(self, name):
-        self.name = name
-        self.last_checked = datetime.datetime.now()
-        self.last_status = False
-        
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    party = db.Column(db.String, nullable=True, default='None')
+    description = db.Column(db.String, nullable=True, default='')
+
+
+    def __init__(self, **kwargs):
+        for key in kwargs.keys():
+            if hasattr(self, key):
+                setattr(self, key, kwargs.get(key))
+            else:
+                raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
+
