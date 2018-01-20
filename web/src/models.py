@@ -3,7 +3,7 @@
 
 import datetime
 from app import db
-
+import json
 
 class User(db.Model):
     __tablename__ = "users"
@@ -24,16 +24,27 @@ class User(db.Model):
             else:
                 raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
 
+    def __str__(self):
+        return '{}. {} {}, {}'.format(self.id, self.first_name, self.last_name, 'Already voted' if self.has_voted else 'Not voted yet')
+
+    def to_dict_repr(self):
+        return {'user': {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+        }}
+
 
 class Candidate(db.Model):
     __tablename__ = "candidates"
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    party = db.Column(db.String, nullable=True, default='None')
-    description = db.Column(db.String, nullable=True, default='')
+    first_name = db.Column(db.String, nullable=False, default='')
+    last_name = db.Column(db.String, nullable=False, default='')
+    age = db.Column(db.Integer, nullable=False, default='')
+    party = db.Column(db.String, nullable=True)
+    description = db.Column(db.String, nullable=True)
+    first_name2 = db.Column(db.String, nullable=False, default='')
 
 
     def __init__(self, **kwargs):
