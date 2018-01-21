@@ -74,18 +74,28 @@ def vote():
 def candidates_list():
     candidates_list = []
     ids = []
+    first_names = []
+    last_names = []
+    ages = []
+    parties = []
+    descriptions = []
     requestedData = Request('http://localhost:8001/candidates')
-    print("I can't even try. MUTHAFUCKING IDIOTIC")
-    response = urlopen(requestedData)
-    response_dict = json.load(response)
-    print("CAN A MAN GET A CODE?")
-    if response.getcode() == 200:
-        print("CODE WAS 200")
-        candidates_list = response_dict['candidates_list']
-        print(candidates_list)
-        for value in candidates_list:
-            ids.append(value['id'])
-    return render_template('/candidates_list.html', ids=ids)
+    try:
+        response = urlopen(requestedData)
+        response_dict = json.load(response)
+        if response.getcode() == 200:
+            candidates_list = response_dict['candidates_list']
+            for value in candidates_list:
+                ids.append(value['id'])
+                first_names.append(value['first_name'])
+                last_names.append(value['last_name'])
+                ages.append(value['age'])
+                parties.append(value['party'])
+                descriptions.append(value['description'])
+            return render_template('/candidates_list.html', ids=ids, first_names=first_names, last_names=last_names, ages=ages, parties=parties, descriptions=descriptions)
+    except Exception as e:
+        print("Something went wrong")
+        return render_template('/error.html')
     #return render_template('/candidates_list.html', ids=ids)
 @app.route(app_url + '/humunculus1')
 def admin1_login():

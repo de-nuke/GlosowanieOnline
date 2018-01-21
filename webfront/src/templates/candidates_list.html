@@ -9,10 +9,14 @@
 </head>
 <body>
 	<h1>Lista kandydatów</h1>
-    <p>Poniżej możesz zobaczyć kandydatów do głosowania.</p>
-    <p>NO BULLSZIT CANDIDATES LISTED BY FOR</p>
+    <p>Poniżej możesz zobaczyć kandydatów do głosowania:</p>
     {% for n in range( ids|length ) %}
-        <p>ids[n]</p>
+        <div name=candidate class=candidate>
+            <p>{{ids[n]}}. {{first_names[n]}} {{last_names[n]}}</p>
+            <p>Wiek: {{ages[n]}}</p>
+            <p>Partia: {{parties[n]}}</p>
+            <p>{{descriptions[n]}}</p>        
+        </div>
     {% endfor %}
     <p><a href="http://localhost:8002/logged">Wróć</a></p>
 </body>

@@ -5,48 +5,17 @@ body
 	max-width:100%;
 	line-height:1.6;
 	font-size:18px;
-	color:#444;
-	background-color:bisque;
+	color:#CCCCCC;
+    background: #000000; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #000000, #434343);
+    background: linear-gradient(to right, #000000, #434343);
 }
-.option_panel
+.candidate 
 {
-	width: 30%;
-	float: left;
-	border: thick double blue;
-}
-.dynamic_panel
-{
-	width: 60%;
-	float: left;
-        border: thick double red;
-}
-.single_note, .search_options
-{
-	border-style: solid;
-    	border-width: 3px;
-	border-color: red;
-}
-.note_part, .note_part_inactive
-{
-        border-style: solid;
-        border-width: 1px;
-        border-color: red;
-
-}
-.opened_note_part, .opened_note_part_delete, .opened_note_part_edit, .search_party, .info
-{
-        border-style: solid;
-        border-width: 1px;
-        border-color: red;
-
-}
-.option_panel_inside
-{
-	
-}
-.note_part:hover, .option_panel_inside:hover, .opened_note_part_delete:hover, .opened_note_part_edit:hover, .search_party:hover
-{
-	background-color: chocolate;
+    border-style: single;
+    border-radius: 10px;
+    outline-color: white;
+    border-color: red;
 }
 
 
