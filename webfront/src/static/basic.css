@@ -12,16 +12,17 @@ body
 }
 .candidate 
 {
-    border-style: single;
+    border: 5px solid #555E94;
     border-radius: 10px;
-    outline-color: white;
-    border-color: red;
+    margin-bottom: 10px;
+    padding: 7px;
 }
-
-
-
-
-
+a:link, a:visited {
+    color: #555E94;
+}
+a:hover{
+    color: #16268A;
+}
 
 
 

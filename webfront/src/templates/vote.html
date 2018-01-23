@@ -10,12 +10,12 @@
 <body>
 	<h1>Zagłosuj</h1>
     <p>Uwaga! Głosowanie jest jednorazowe. Nie można zmienić głosu po jego oddaniu!</p>
-    <form action="http://localhost:8002/candidate_chosen" method="POST">
+    <form action="http://localhost:8002/vote_check" method="POST">
         <p>Wybierz kandydata:</p>
         <select name="candidate" required>
             <option value="volvo">Volvo</option>
         </select>    
-        <p><input type="submit" name="submit" value="Zaloguj"></p>
+        <p><input type="submit" name="submit" value="Zagłosuj"></p>
     </form>
     <p><a href="http://localhost:8002/candidates">Lista kandydatów</a></p>
     <p><a href="http://localhost:8002/logged">Wróć</a></p>
