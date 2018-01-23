@@ -11,10 +11,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
+    age=db.Column(db.Integer, nullable=False, default=0)
     father_name = db.Column(db.String, nullable=False)
     mother_name = db.Column(db.String, nullable=False)
     id_series_number = db.Column(db.String, nullable=False)
     pesel = db.Column(db.String, nullable=False)
+
     has_voted = db.Column(db.Boolean, nullable=True, default=False)
 
     def __init__(self, **kwargs):
@@ -45,6 +47,7 @@ class Candidate(db.Model):
     party = db.Column(db.String, nullable=True)
     description = db.Column(db.String, nullable=True)
     first_name2 = db.Column(db.String, nullable=False, default='')
+    num_of_votes = db.Column(db.Integer, nullable=False, default=0)
 
 
     def __init__(self, **kwargs):
@@ -54,3 +57,6 @@ class Candidate(db.Model):
             else:
                 raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
 
+
+# class Vote(db.Model):
+#     pass

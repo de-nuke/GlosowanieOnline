@@ -60,6 +60,15 @@ for i in range(int(USERS_NUM/2)):
         pesel=''.join(random.choice(string.digits) for _ in range(10)),
     ))
 
+db.session.add(User(
+    first_name='test',
+    last_name='test',
+    father_name='test',
+    mother_name='test',
+    id_series_number='test',
+    pesel='test'
+))    
+
 for i in range(int(CANDIDATES_NUM/2)):
     db.session.add(Candidate(
         first_name=random.choice(first_names_m),
