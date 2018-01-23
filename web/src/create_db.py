@@ -75,13 +75,24 @@ for i in range(int(CANDIDATES_NUM/2)):
         last_name=random.choice(last_names),
         age=random.randrange(18, 60),
         party=random.choice(parties),
-        description=random.choice(descriptions)
+        description=random.choice(descriptions),
+        num_of_votes=0,
     ))
     db.session.add(Candidate(
         first_name=random.choice(first_names_f),
         last_name=random.choice(last_names),
         age=random.randrange(18, 60),
         party=random.choice(parties),
-        description=random.choice(descriptions)
+        description=random.choice(descriptions),
+        num_of_votes=0,
     ))
+
+db.session.add(Candidate(
+    first_name='test',
+    last_name='test',
+    age=0,
+    party='test',
+    description='test',
+    num_of_votes=0,
+))
 db.session.commit()

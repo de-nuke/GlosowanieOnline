@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 admin = Admin(app, name='Voting online', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Candidate, db.session))
-
+# admin.add_view(ModelView(Vote, db.session))
 
 @app.before_request
 def func():
