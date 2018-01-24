@@ -47,7 +47,7 @@ def login():
         matching_records = User.query.filter_by(**claims).all()
         if len(matching_records) == 1:
             token = jwt.encode(claims, app.secret_key, headers=headers)
-            return my_make_response(json.dumps({"token": token}), 200)
+            return my_make_response(json.dumps({"token": token, "has_voted": matching_records[0].has_voted}), 200)
         elif len(matching_records) >= 2:
             return my_make_response(json.dumps({
                 'error_type': 'multiple_users',
