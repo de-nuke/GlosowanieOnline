@@ -28,7 +28,6 @@ def check():
 	values_dict = {}
 	values_dict['first_name'] = request.form["first_name"]
 	values_dict['last_name'] = request.form["last_name"]
-	values_dict['age'] = 0
 	values_dict['father_name'] = request.form["fathers_name"]
 	values_dict['mother_name'] = request.form["mothers_name"]
 	values_dict['id_series_number'] = request.form["id_number"]
@@ -63,14 +62,35 @@ def logged():
 def logout():		
 	session.clear()
 	return redirect(app_url + '/')
-@app.route(app_url + '/vote')
+@app.route(app_url + '/vote', methods=['GET', 'POST'])
 def vote():
-	if session.has_key('token'):
-		if session['has_voted'] == True:
-			return render_template('/error.html', message = u("Już głosowałeś."))
-		return render_template('/vote.html', first_name = session['first_name'], second_name = session['last_name'])
-	else:
+	if not session.has_key('token'):
 		return redirect(app_url + '/login')
+	if session['has_voted'] == True:
+		return render_template('/error.html', message = u("Już głosowałeś."))
+	ids = []
+	cfn = []
+	cln = []
+	requestedData = Request('http://localhost:8001/candidates')
+	try:
+		print("GUNNA TRY")
+		response = urlopen(requestedData)
+		print("Responsed")
+		response_dict = json.load(response)
+		print("DICKTED")
+		if response.getcode() == 200:
+			print("GOT 200")
+			candidates_list = response_dict['candidates_list']
+			for value in candidates_list:
+				ids.append(value['id'])
+				cfn.append(value['first_name'])
+				cln(value['last_name'])
+			return render_template('/vote.html', first_name = session['first_name'], second_name = session['last_name'], ids = ids, candidates_first_name = cfn, candidates_last_name = cln)
+		else:
+			return render_template('/error.html', message = u("Brak komunikacji z bazą kandydatów. Spróbuj ponownie później."))
+	except:
+		return render_template('/error.html', message = u("Brak komunikacji z bazą kandydatów. Lub zapytanie nie było poprawne. Spróbuj ponownie później."))
+
 @app.route(app_url+ '/vote_check', methods=['POST'])
 def vote_check():
 	values_dict = {}
@@ -91,7 +111,6 @@ def vote_check():
 	except HTTPError, error:
 		print error.code
 		return render_template('/error.html', message = u("Zapytanie nie było poprawne."))
-
 @app.route(app_url + "/candidates", methods=['GET'])
 def candidates_list():
 	candidates_list = []

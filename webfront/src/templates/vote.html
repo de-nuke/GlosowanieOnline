@@ -13,7 +13,10 @@
     <form action="http://localhost:8002/vote_check" method="POST">
         <p>Wybierz kandydata:</p>
         <select name="candidate" required>
-            <option value="volvo">Volvo</option>
+{% for message in get_flashed_messages() %}
+		{% for n in range( ids|length ) %}
+			<option value="{{ids[n]}}">{{ids[n]}}. {{first_names[n]}} {{last_names[n]}}</option>
+		{% endfor %}
         </select>    
         <p><input type="submit" name="submit" value="Zagłosuj"></p>
     </form>
