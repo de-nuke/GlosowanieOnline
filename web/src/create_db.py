@@ -2,8 +2,8 @@
 
 
 from app import db
-from models import  User, Candidate
-import random, string
+from models import  User, Candidate, Config
+import random, string, datetime
 
 USERS_NUM = 10
 CANDIDATES_NUM = 10
@@ -95,4 +95,10 @@ db.session.add(Candidate(
     description='test',
     num_of_votes=0,
 ))
+
+if not len(Config.query.all()):
+    db.session.add(Config(
+        voting_start=datetime.datetime.now(),
+        voting_stop=datetime.datetime.now() + datetime.timedelta(days=7)
+    ))
 db.session.commit()

@@ -40,6 +40,9 @@ class User(db.Model):
             'last_name': self.last_name,
         }}
 
+    def can_vote(self):
+        return not self.has_voted and self.vote is None
+
 
 class Candidate(db.Model):
     __tablename__ = "candidates"
@@ -50,7 +53,6 @@ class Candidate(db.Model):
     age = db.Column(db.Integer, nullable=False, default=0)
     party = db.Column(db.String, nullable=True)
     description = db.Column(db.String, nullable=True)
-    first_name2 = db.Column(db.String, nullable=False, default='')
     num_of_votes = db.Column(db.Integer, nullable=False, default=0)
 
     votes_set = relationship('Vote', back_populates='candidate')
@@ -62,6 +64,25 @@ class Candidate(db.Model):
             else:
                 raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
 
+    def __str__(self):
+        return '{}. {} {}, {}'.format(self.id, self.first_name, self.last_name, self.party)
+
+    def to_dict_repr(self):
+        return {'candidate': {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+        }}
+
+    def to_dict_full(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'age': self.age,
+            'party': self.party,
+            'num_of_votes': self.num_of_votes
+        }
 
 class Vote(db.Model):
 
@@ -75,9 +96,16 @@ class Vote(db.Model):
     created = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, **kwargs):
-        # self.voter = voter
-        # self.candidate = candidate
-        # self.candidate_id = candidate.id
+        super(Vote, self).__init__(**kwargs)
         self.created = datetime.datetime.now()
-        # candidate.num_of_votes += 1
-        # candidate.save()
+
+
+class Config(db.Model):
+    __tablename__ = 'configs'
+
+    id = id = db.Column(db.Integer, primary_key=True)
+    voting_start = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    voting_stop = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+
+    def __str__(self):
+        return 'voting active: {} - {}'.format(self.voting_start, self.voting_stop)
