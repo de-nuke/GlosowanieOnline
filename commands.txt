@@ -1,3 +1,0 @@
-sudo docker run -d --name web -p 8001:5000 -v /TWOJA/SCIEZKA/DO/FOLDERU/web:/app me/web
-sudo docker run -d --name webfront -v /TWOJA/SCIEZKA/DO/FOLDERU/webfront:/app -p 8002:5000 me/webfront
-
