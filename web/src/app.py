@@ -6,7 +6,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from config import BaseConfig
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from admin_views import SecureFormAdminView, VoteAdminView
 from datetime import timedelta, datetime as dt
 from jose import jwt, exceptions, JWTError
 import json
@@ -16,8 +15,10 @@ app = Flask(__name__)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 
+""" Imports that depend on db object"""
 from models import *
 from admin_login import MyAdminIndexView, init_login
+from admin_views import SecureFormAdminView, VoteAdminView
 
 init_login()
 

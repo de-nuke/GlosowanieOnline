@@ -1,6 +1,8 @@
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask.ext import admin, login
+from app import db
+import sys
 
 class SecureFormAdminView(ModelView):
     form_base_class = SecureForm
@@ -8,6 +10,11 @@ class SecureFormAdminView(ModelView):
 
     def is_accessible(self):
         return login.current_user.is_authenticated
+
+    def after_model_change(self, form, model, is_created):
+        print(model)
+        sys.stdout.flush()
+
 
 
 class VoteAdminView(SecureFormAdminView):
