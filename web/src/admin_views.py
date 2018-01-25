@@ -8,6 +8,7 @@ import hashlib
 
 class SecureFormAdminView(ModelView):
     form_base_class = SecureForm
+    column_exclude_list = ['num_of_votes']
     form_excluded_columns = ('vote', 'votes_set', 'has_voted', 'num_of_votes')
     extra_js = ['/src/static/js/readonly.js']
 
