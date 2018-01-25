@@ -80,7 +80,7 @@ def candidates():
             'party': candidate.party,
             'description': candidate.description,
         })
-    return jsonify({'candidates_list': candidates_list})
+    return jsonify({'candidates_list': sorted(candidates_list, key=lambda x:x['id'])})
 
 
 @app.route('/candidate/<int:pk>')

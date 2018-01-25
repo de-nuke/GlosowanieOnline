@@ -1,14 +1,23 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, session, render_template, redirect, url_for, request
-import random, string, re, sys
+from flask import Flask, session, render_template, redirect, request
 from urllib2 import Request, urlopen, HTTPError
-from werkzeug import SharedDataMiddleware
 import json, urllib
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, widgets
+from wtforms.validators import DataRequired
+class LoginForm(FlaskForm):
+	first_name = StringField('first_name', validators=[DataRequired()])
+	last_name = StringField('last_name', validators=[DataRequired()])
+	father_name = StringField('father_name', validators=[DataRequired()])
+	mother_name = StringField('mother_name', validators=[DataRequired()])
+	id_series_number = StringField('id_series_number', validators=[DataRequired()])
+	pesel = StringField('pesel', validators=[DataRequired()])
+class VoteForm(FlaskForm):
+	candidate = SelectField('candidate', choices=[], widget=widgets.Select())
 app_url = ''
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.secret_key = "SecretAppKeyXxX"
 app.debug = False
-
 def u(string):
 	return unicode(string, "utf-8")
 def voting_ended():
@@ -64,15 +73,16 @@ def login():
 	if session.has_key('token'):
 		return redirect(app_url + '/logged')
 	else:
-		return render_template('/login.html')
+		form = LoginForm()
+		return render_template('/login.html', form=form)
 @app.route(app_url + '/check', methods=['POST', 'GET'])
 def check():
 	values_dict = {}
 	values_dict['first_name'] = request.form["first_name"]
 	values_dict['last_name'] = request.form["last_name"]
-	values_dict['father_name'] = request.form["fathers_name"]
-	values_dict['mother_name'] = request.form["mothers_name"]
-	values_dict['id_series_number'] = request.form["id_number"]
+	values_dict['father_name'] = request.form["father_name"]
+	values_dict['mother_name'] = request.form["mother_name"]
+	values_dict['id_series_number'] = request.form["id_series_number"]
 	values_dict['pesel'] = request.form["pesel"]
 	values = json.dumps(values_dict)
 	headers = {'Content-Type': 'application/json'}
@@ -111,20 +121,17 @@ def vote():
 		return redirect(app_url + '/login')
 	if session['has_voted'] == True:
 		return render_template('/error.html', message = u("Już głosowałeś."))
-	ids = []
-	cfn = []
-	cln = []
 	requestedData = Request('http://localhost:8001/candidates')
 	try:
 		response = urlopen(requestedData)
 		response_dict = json.load(response)
 		if response.getcode() == 200:
 			candidates_list = response_dict['candidates_list']
+			form = VoteForm()
 			for value in candidates_list:
-				ids.append(value['id'])
-				cfn.append(value['first_name'])
-				cln.append(value['last_name'])		
-			return render_template('/vote.html', first_name = session['first_name'], second_name = session['last_name'], ids = ids, first_names = cfn, last_names = cln)
+				candidate_string = str(value['id'])+". "+value['first_name']+ " " +value['last_name']
+				form.candidate.choices.append((value['id'], candidate_string))
+			return render_template('/vote.html', first_name = session['first_name'], second_name = session['last_name'], form=form)
 		else:
 			return render_template('/error.html', message = u("Brak komunikacji z bazą kandydatów. Spróbuj ponownie później."))
 	except Exception as e:

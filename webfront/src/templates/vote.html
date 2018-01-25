@@ -10,16 +10,13 @@
 <body>
 	<h1>Zagłosuj</h1>
     <p>Uwaga! Głosowanie jest jednorazowe. Nie można zmienić głosu po jego oddaniu!</p>
-    <form action="http://localhost:8002/vote_check" method="POST">
-        <p>Wybierz kandydata:</p>
-        <select name="candidate" required>
-		{% for n in range( ids|length ) %}
-			<option value="{{ids[n]}}">{{ids[n]}}. {{first_names[n]}} {{last_names[n]}}</option>
-		{% endfor %}
-        </select>    
+    <form action="/vote_check" method="POST">
+        {{ form.csrf_token }}
+	<p>Wybierz kandydata:</p>
+	{{ form.candidate }}
         <p><input type="submit" name="submit" value="Zagłosuj"></p>
     </form>
-    <p><a href="http://localhost:8002/candidates">Lista kandydatów</a></p>
-    <p><a href="http://localhost:8002/logged">Wróć</a></p>
+    <p><a href="/candidates">Lista kandydatów</a></p>
+    <p><a href="/logged">Wróć</a></p>
 </body>
 </html>
