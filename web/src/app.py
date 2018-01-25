@@ -11,7 +11,7 @@ from jose import jwt, exceptions, JWTError
 import json
 import hashlib
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/src/static')
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 
