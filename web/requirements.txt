@@ -12,6 +12,7 @@ gunicorn==19.3.0
 itsdangerous==0.24
 psycopg2==2.6
 flask-admin
+Flask-Login
 python-jose
 
 
