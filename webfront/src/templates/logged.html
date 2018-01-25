@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Witaj {{first_name}} {{last_name}}!</h1>
-    <p>Poniżej możesz zobaczyć kandydatów do głosowania oraz wybrać swojego kandydata. Po zakończeniu okresu wyborczego na stronie głównej zostaną umieszczone wyniki.</p>
+    <p>Poniżej możesz zobaczyć kandydatów do głosowania oraz wybrać swojego kandydata, jeśli dotychczas nie głosowałeś/aś. Po zakończeniu okresu wyborczego na stronie głównej zostaną umieszczone wyniki.</p>
     {%if not has_voted%}
         <p><a href="http://localhost:8002/vote">Zagłosuj</a></p>
     {%endif%}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8">
+	<title> Lista kandydatów </title>
+	<meta name="description" content="Candidates">
+	<meta name ="keywords" content="who, candidates, vote, voting">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='basic.css') }}">
+</head>
+<body>
+	<h1>Wyniki wyborów</h1>
+    {% for n in range( ids|length ) %}
+        <div name=candidate class=candidate>
+            <p class=nov> Liczba głosów: {{number_of_votes[n]}}</p>
+            <p>{{ids[n]}}. {{first_names[n]}} {{last_names[n]}}</p>
+            <p>Wiek: {{ages[n]}}</p>
+            <p>Partia: {{parties[n]}}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

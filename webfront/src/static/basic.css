@@ -17,6 +17,11 @@ body
     margin-bottom: 10px;
     padding: 7px;
 }
+.nov
+{
+    font-size:26px;
+    color:#6600CC;
+}
 a:link, a:visited {
     color: #555E94;
 }
