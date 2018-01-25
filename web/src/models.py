@@ -28,14 +28,15 @@ class User(db.Model):
 
     def __init__(self, **kwargs):
         for key in kwargs.keys():
-            if hasattr(self, key) and key not in USER_HASHED_FIELDS:
-                setattr(self, key, kwargs.get(key))
+            if hasattr(self, key):
+                if key not in USER_HASHED_FIELDS:
+                    setattr(self, key, kwargs.get(key))
             else:
                 raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
 
         for hf in USER_HASHED_FIELDS:
             if hf in kwargs:
-                hashed = hashlib.sha256(kwargs.get('id_series_number')).hexdigest()
+                hashed = hashlib.sha256(kwargs.get(hf).encode("utf-8")).hexdigest()
                 setattr(self, hf, hashed)
 
 

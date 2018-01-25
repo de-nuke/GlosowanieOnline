@@ -10,22 +10,23 @@
 <body>
     <h1>Zaloguj się</h1>
 	<div class="login">
-	<form action="http://localhost:8002/check" method="POST">
+	<form action="/check" method="POST">
+		{{ form.csrf_token }}
 		<p>Imię:</p>
-		<input type="text" name="first_name" required>
+		{{ form.first_name(size=20) }}
                 <p>Nazwisko:</p>
-                <input type="text" name="last_name" required>
-                <p>Imię ojca:</p>
-                <input type="text" name="fathers_name" required>
-                <p>Imię matki:</p>
-                <input type="text" name="mothers_name" required>
-                <p>Numer seryjny dowodu osobistego:</p>
-                <input type="text" name="id_number" required>
-                <p>PESEL:</p>
-                <input type="text" name="pesel" required>
-                <p><input type="submit" name="submit" value="Zaloguj"></p>
+                {{ form.last_name(size=20) }}
+		<p>Imię ojca:</p>
+                {{ form.father_name(size=20) }}
+		<p>Imię matki:</p>
+                {{ form.mother_name(size=20) }}
+		<p>Numer seryjny dowodu osobistego:</p>
+                {{ form.id_series_number(size=9) }}
+		<p>PESEL:</p>
+                {{ form.pesel(size=11) }}
+		<p><input type="submit" name="submit" value="Zaloguj"></p>
 	</form>
-	<p><a href="http://localhost:8002">Wróć</a></p>
+	<p><a href="/">Wróć</a></p>
 	</div>
 </body>
 </html>
