@@ -151,7 +151,7 @@ def vote_check():
 		response_dict = json.load(response)
 		if response.getcode() == 200:
 			session['has_voted'] = True
-			return render_template('/error.html', message = u("Oddano głos. Dobra robota obywatelu."))
+			return render_template('/message.html', message = u("Oddano głos. Dobra robota obywatelu."))
 		else:
 			return render_template('/error.html', message = u("Głos nieważny. Spróbuj ponownie później."))
 	except Exception as e:

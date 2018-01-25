@@ -37,7 +37,7 @@ def login():
     required_fields = {'first_name', 'last_name', 'father_name', 'mother_name', 'id_series_number', 'pesel'}
     if required_fields.issubset(set(claims)):
         for hf in USER_HASHED_FIELDS:  # imported from models.py
-            claims[hf] = hashlib.sha256(claims[hf]).hexdigest()
+            claims[hf] = hashlib.sha256(claims[hf].encode("utf-8")).hexdigest()
 
         matching_records = User.query.filter_by(**claims).all()
         if len(matching_records) == 1:
