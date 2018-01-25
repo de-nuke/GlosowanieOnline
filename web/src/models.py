@@ -6,7 +6,9 @@ from app import db
 import json
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
+import hashlib
 
+USER_HASHED_FIELDS = ['id_series_number', 'pesel']
 
 class User(db.Model):
     __tablename__ = "users"
@@ -23,12 +25,19 @@ class User(db.Model):
 
     has_voted = db.Column(db.Boolean, nullable=True, default=False)
 
+
     def __init__(self, **kwargs):
         for key in kwargs.keys():
-            if hasattr(self, key):
+            if hasattr(self, key) and key not in USER_HASHED_FIELDS:
                 setattr(self, key, kwargs.get(key))
             else:
                 raise AttributeError(self.__class__.__name__ + ' has no attribute: \'' + key + '\'')
+
+        for hf in USER_HASHED_FIELDS:
+            if hf in kwargs:
+                hashed = hashlib.sha256(kwargs.get('id_series_number')).hexdigest()
+                setattr(self, hf, hashed)
+
 
     def __str__(self):
         return '{}. {} {}, {}'.format(self.id, self.first_name, self.last_name, 'Already voted' if self.has_voted else 'Not voted yet')

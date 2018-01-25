@@ -11,39 +11,34 @@ from admin_views import SecureFormAdminView, VoteAdminView
 from datetime import timedelta, datetime as dt
 from jose import jwt, exceptions, JWTError
 import json
-
+import hashlib
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
-from models import *
 
-admin = Admin(app, name='Voting online', template_mode='bootstrap3')
+from models import *
+from admin_login import MyAdminIndexView, init_login
+
+init_login()
+
+admin = Admin(app, name='Voting online', template_mode='bootstrap3', index_view=MyAdminIndexView(), base_template='my_master.html')
 admin.add_view(SecureFormAdminView(User, db.session))
 admin.add_view(SecureFormAdminView(Candidate, db.session))
-admin.add_view(VoteAdminView(Vote, db.session))
+# admin.add_view(VoteAdminView(Vote, db.session))  # Administrator shouldn't see votes
 admin.add_view(SecureFormAdminView(Config, db.session))
-
-
-@app.before_request
-def func():
-    session.modified = True
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=5)
-
-
-@app.route('/index', methods=['GET'])
-def index():
-    users = User.query.all()
-    return str(users)
 
 
 @app.route('/login', methods=['POST'])
 def login():
     claims = request.json
     headers = request.headers
+
     required_fields = {'first_name', 'last_name', 'father_name', 'mother_name', 'id_series_number', 'pesel'}
     if required_fields.issubset(set(claims)):
+        for hf in USER_HASHED_FIELDS:  # imported from models.py
+            claims[hf] = hashlib.sha256(claims[hf]).hexdigest()
+
         matching_records = User.query.filter_by(**claims).all()
         if len(matching_records) == 1:
             token = jwt.encode(claims, app.secret_key, headers=headers)

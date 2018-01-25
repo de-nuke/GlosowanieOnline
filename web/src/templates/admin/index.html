@@ -1,0 +1,43 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="row-fluid">
+
+    <div>
+        {% if current_user.is_authenticated %}
+        <h1>Witaj administratorze</h1>
+        <p class="lead">
+            Co możesz zrobić?
+        </p>
+        <p>
+            <ol>
+                <li>Dodawać lub usuwać użytkowników</li>
+                <li>Dodawać lub usuwać kandydatów</li>
+                <li>Ustawiać datę rozpoczęcia i zakończenia wyborów</li>
+            </ol>
+
+        </p>
+        {% else %}
+        <form method="POST" action="">
+            {{ form.hidden_tag() if form.hidden_tag }}
+            {% for f in form if f.type != 'CSRFTokenField' %}
+            <div>
+            {{ f.label }}
+            {{ f }}
+            {% if f.errors %}
+            <ul>
+                {% for e in f.errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn" type="submit">Zaloguj</button>
+        </form>
+        {% endif %}
+    </div>
+
+{#    <a class="btn btn-primary" href="/admin"><i class="icon-arrow-left icon-white"></i> Powrót</a>#}
+</div>
+{% endblock body %}
