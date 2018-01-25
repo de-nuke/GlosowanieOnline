@@ -1,6 +1,5 @@
 # app.py
 
-
 from flask import Flask, jsonify, session, make_response
 from flask import request, render_template, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -29,7 +28,36 @@ admin.add_view(SecureFormAdminView(Candidate, db.session))
 admin.add_view(SecureFormAdminView(Config, db.session))
 
 
+def require_voting_active(func):
+    def func_wrapper():
+        if voting_is_active():
+            return func()
+        else:
+            return my_make_response(json.dumps({
+                'error_type': 'voting_inactive',
+                'voting_inactive': 'You cannot perform this action, because there is no active voting now.'
+            }), 410)
+
+    func_wrapper.__name__ = func.__name__
+    return func_wrapper
+
+
+def require_voting_inactive(func):
+    def func_wrapper():
+        if not voting_is_active():
+            return func()
+        else:
+            return my_make_response(json.dumps({
+                'error_type': 'voting_active',
+                'voting_inactive': 'You cannot perform this action while voting is active'
+            }), 403)
+
+    func_wrapper.__name__ = func.__name__
+    return func_wrapper
+
+
 @app.route('/login', methods=['POST'])
+@require_voting_active
 def login():
     claims = request.json
     headers = request.headers
@@ -62,6 +90,7 @@ def login():
 
 
 @app.route('/candidates', methods=['GET'])
+@require_voting_active
 def candidates():
     all_candidates = Candidate.query.all()
     candidates_list = []
@@ -79,6 +108,7 @@ def candidates():
 
 
 @app.route('/candidate/<int:pk>')
+@require_voting_active
 def candidate_details(pk):
     candidate = Candidate.query.get(pk)
     return jsonify(
@@ -94,6 +124,7 @@ def candidate_details(pk):
 
 
 @app.route('/vote', methods=['POST'])
+@require_voting_active
 def vote():
     check_output = check_token()
     if 'user' in check_output['result']:
@@ -141,8 +172,8 @@ def vote():
     }), 200)
 
 
-
 @app.route('/results')
+@require_voting_inactive
 def results():
     if not voting_is_active():
         candidates = sorted(Candidate.query.all(), key=lambda x: -x.num_of_votes)
