@@ -11,9 +11,9 @@
     <h1>Witaj {{first_name}} {{last_name}}!</h1>
     <p>Poniżej możesz zobaczyć kandydatów do głosowania oraz wybrać swojego kandydata, jeśli dotychczas nie głosowałeś/aś. Po zakończeniu okresu wyborczego na stronie głównej zostaną umieszczone wyniki.</p>
     {%if not has_voted%}
-        <p><a href="http://localhost:8002/vote">Zagłosuj</a></p>
+        <p><a href="/vote">Zagłosuj</a></p>
     {%endif%}
-    <p><a href="http://localhost:8002/candidates">Zobacz listy kandydatów</a></p>
-    <p><a href="http://localhost:8002/logout">Wyloguj się</a></p>
+    <p><a href="/candidates">Zobacz listy kandydatów</a></p>
+    <p><a href="/logout">Wyloguj się</a></p>
 </body>
 </html>

@@ -5,6 +5,7 @@ import json, urllib, cgi
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, widgets
 from wtforms.validators import DataRequired
+from OpenSSL import SSL
 class LoginForm(FlaskForm):
 	first_name = StringField('first_name', validators=[DataRequired()])
 	last_name = StringField('last_name', validators=[DataRequired()])
@@ -54,7 +55,6 @@ def get_results():
 				number_of_votes.append(cgi.escape(str(value['num_of_votes'])))
                         return render_template('/results.html', number_of_votes = number_of_votes, ids=ids, first_names=first_names, last_names=last_names, ages=ages, parties=parties)
         except Exception as e:
-		print e
                 return render_template('/error.html', message = u("Zapytanie nie było poprawne lub wybory się nie zakończyły."))
 
 
@@ -99,8 +99,7 @@ def check():
 		else:
 			return render_template('/error.html', message = u("Nieprawidłowe dane logowania!"))
 	except Exception as e:
-		print e
-		return render_template('/error.html', message = u("Zapytanie nie było poprawne."))
+		return render_template('/error.html', message = u("Niepoprawne dane logowania."))
 @app.route(app_url + '/logged')
 def logged():
         if voting_ended() != False:
@@ -135,7 +134,6 @@ def vote():
 		else:
 			return render_template('/error.html', message = u("Brak komunikacji z bazą kandydatów. Spróbuj ponownie później."))
 	except Exception as e:
-		print e
 		return render_template('/error.html', message = u("Brak komunikacji z bazą kandydatów. Lub zapytanie niepoprawne. Spróbuj ponownie później."))
 
 @app.route(app_url+ '/vote_check', methods=['POST'])
@@ -155,7 +153,6 @@ def vote_check():
 		else:
 			return render_template('/error.html', message = u("Głos nieważny. Spróbuj ponownie później."))
 	except Exception as e:
-		print e
 		return render_template('/error.html', message = u("Zapytanie nie było poprawne."))
 @app.route(app_url + "/candidates", methods=['GET'])
 def candidates_list():
@@ -183,10 +180,10 @@ def candidates_list():
 				descriptions.append(cgi.escape(value['description']))
 			return render_template('/candidates_list.html', ids=ids, first_names=first_names, last_names=last_names, ages=ages, parties=parties, descriptions=descriptions)
 	except Exception as e:
-		print e
 		return render_template('/error.html', message = u("Zapytanie nie było poprawne."))
 @app.errorhandler(404)
 def page_not_found(e):
 	return "Nie znaleziono strony."
 if __name__ == '__main__':
-	app.run(debug=True,host='0.0.0.0', port=8002)
+	context= ("server.crt", "server.key")
+	app.run(debug=False,host='0.0.0.0', port=8002, ssl_context=context)
