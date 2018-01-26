@@ -7,6 +7,8 @@ import json
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 import hashlib
+import random
+import string
 
 USER_HASHED_FIELDS = ['id_series_number', 'pesel']
 

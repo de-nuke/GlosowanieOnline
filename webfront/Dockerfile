@@ -5,6 +5,6 @@ RUN apt-get install -y python-pip python-dev build-essential
 COPY requirements.txt /app/requirements.txt
 COPY . /app
 WORKDIR /app
-RUN pip install -r requirements.txt
+RUN echo nameserver 10.30.0.133 >> /etc/resolv.conf && pip install -r requirements.txt
 ENTRYPOINT ["python"]
 CMD ["src/onlinevotingclient.py"]

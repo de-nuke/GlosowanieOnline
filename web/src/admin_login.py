@@ -12,6 +12,8 @@ class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(1024))
+    token = db.Column(db.String(1024), unique=True)
+    salt = db.Column(db.String(32))
 
     # Flask-Login integration
     def is_authenticated(self):
@@ -34,6 +36,7 @@ class Admin(db.Model):
 class LoginForm(form.Form):
     login = fields.TextField(validators=[validators.required()])
     password = fields.PasswordField(validators=[validators.required()])
+    token = fields.TextField(validators=[validators.required()])
 
     def validate_login(self, field):
         user = self.get_user()
@@ -41,8 +44,11 @@ class LoginForm(form.Form):
         if user is None:
             raise validators.ValidationError('Invalid user')
 
-        if not check_password_hash(user.password, self.password.data):
+        if not check_password_hash(user.password, self.password.data + user.salt):
             raise validators.ValidationError('Invalid password')
+
+        if not check_password_hash(user.token, self.token.data + user.salt):
+            raise validators.ValidationError('Invalid token')
 
     def get_user(self):
         return db.session.query(Admin).filter_by(login=self.login.data).first()
