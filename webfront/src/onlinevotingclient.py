@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, session, render_template, redirect, request
 from urllib2 import Request, urlopen, HTTPError
-import json, urllib
+import json, urllib, cgi
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, widgets
 from wtforms.validators import DataRequired
@@ -46,12 +46,12 @@ def get_results():
                 if response.getcode() == 200:
 			candidates_list = response_dict['candidates']
 			for value in candidates_list:
-                                ids.append(value['id'])
-                                first_names.append(value['first_name'])
-                                last_names.append(value['last_name'])
-                                ages.append(value['age'])
-                                parties.append(value['party'])
-				number_of_votes.append(value['num_of_votes'])
+                                ids.append(cgi.escape(str(value['id'])))
+                                first_names.append(cgi.escape(value['first_name']))
+                                last_names.append(cgi.escape(value['last_name']))
+                                ages.append(cgi.escape(str(value['age'])))
+                                parties.append(cgi.escape(value['party']))
+				number_of_votes.append(cgi.escape(str(value['num_of_votes'])))
                         return render_template('/results.html', number_of_votes = number_of_votes, ids=ids, first_names=first_names, last_names=last_names, ages=ages, parties=parties)
         except Exception as e:
 		print e
@@ -92,8 +92,8 @@ def check():
 		response_dict = json.load(response)
 		if response.getcode() == 200:
 			session['token'] = response_dict['token']
-			session['first_name'] = values_dict['first_name']
-			session['last_name'] = values_dict['last_name']
+			session['first_name'] = cgi.escape(values_dict['first_name'])
+			session['last_name'] = cgi.escape(values_dict['last_name'])
 			session['has_voted'] = response_dict['has_voted']
 			return redirect(app_url + '/logged')
 		else:
@@ -129,7 +129,7 @@ def vote():
 			candidates_list = response_dict['candidates_list']
 			form = VoteForm()
 			for value in candidates_list:
-				candidate_string = str(value['id'])+". "+value['first_name']+ " " +value['last_name']
+				candidate_string = cgi.escape(str(value['id'])+". "+value['first_name']+ " " +value['last_name'])
 				form.candidate.choices.append((value['id'], candidate_string))
 			return render_template('/vote.html', first_name = session['first_name'], second_name = session['last_name'], form=form)
 		else:
@@ -175,12 +175,12 @@ def candidates_list():
 		if response.getcode() == 200:
 			candidates_list = response_dict['candidates_list']
 			for value in candidates_list:
-				ids.append(value['id'])
-				first_names.append(value['first_name'])
-				last_names.append(value['last_name'])
-				ages.append(value['age'])
-				parties.append(value['party'])
-				descriptions.append(value['description'])
+				ids.append(cgi.escape(str(value['id'])))
+				first_names.append(cgi.escape(value['first_name']))
+				last_names.append(cgi.escape(value['last_name']))
+				ages.append(cgi.escape(str(value['age'])))
+				parties.append(cgi.escape(value['party']))
+				descriptions.append(cgi.escape(value['description']))
 			return render_template('/candidates_list.html', ids=ids, first_names=first_names, last_names=last_names, ages=ages, parties=parties, descriptions=descriptions)
 	except Exception as e:
 		print e
