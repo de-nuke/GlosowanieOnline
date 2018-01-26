@@ -19,10 +19,11 @@ app_url = ''
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.secret_key = "SecretAppKeyXxX"
 app.debug = False
+verify=False
 def u(string):
 	return unicode(string, "utf-8")
 def voting_ended():
-	requestedData = Request('http://localhost:8001/results')
+	requestedData = Request('https://localhost:8001/results', verify=verify)
         try:
                 response = urlopen(requestedData)
                 response_dict = json.load(response)
@@ -40,7 +41,7 @@ def get_results():
         ages = []
         parties = []
 	number_of_votes = []
-	requestedData = Request('http://localhost:8001/results')
+	requestedData = Request('https://localhost:8001/results', verify=verify)
         try:
                 response = urlopen(requestedData)
                 response_dict = json.load(response)
@@ -86,7 +87,7 @@ def check():
 	values_dict['pesel'] = request.form["pesel"]
 	values = json.dumps(values_dict)
 	headers = {'Content-Type': 'application/json'}
-	requestedData = Request('http://localhost:8001/login', data=values, headers=headers)
+	requestedData = Request('https://localhost:8001/login', data=values, headers=headers, verify=verify)
 	try:
 		response = urlopen(requestedData)
 		response_dict = json.load(response)
@@ -120,7 +121,7 @@ def vote():
 		return redirect(app_url + '/login')
 	if session['has_voted'] == True:
 		return render_template('/error.html', message = u("Już głosowałeś."))
-	requestedData = Request('http://localhost:8001/candidates')
+	requestedData = Request('https://localhost:8001/candidates', verify=verify)
 	try:
 		response = urlopen(requestedData)
 		response_dict = json.load(response)
@@ -143,7 +144,7 @@ def vote_check():
 	values_dict['candidate_id'] = request.form["candidate"]
 	values = json.dumps(values_dict)
 	headers = {'Content-Type': 'application/json'}
-	requestedData = Request('http://localhost:8001/vote', data=values, headers=headers)
+	requestedData = Request('https://localhost:8001/vote', data=values, headers=headers, verify=verify)
 	try:
 		response = urlopen(requestedData)
 		response_dict = json.load(response)
@@ -165,7 +166,7 @@ def candidates_list():
 	ages = []
 	parties = []
 	descriptions = []
-	requestedData = Request('http://localhost:8001/candidates')
+	requestedData = Request('https://localhost:8001/candidates')
 	try:
 		response = urlopen(requestedData)
 		response_dict = json.load(response)
